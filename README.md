@@ -1,10 +1,10 @@
 ## Introduction
 
 
-<b>Discipline | <b>Fill your discipline name here
+<b>Discipline | <b>Chemical Engineering
 :--|:--|
-<b> Lab | <b> Fill your lab name here
-<b> Experiment|     <b> Fill your experiment name and number here
+<b> Lab | <b> Soft Computing Lab
+<b> Experiment|     <b> To compare the change in molar volume in vanderwaal and ideal gas equations of state
 
 ### About the Experiment 
 
