@@ -5,7 +5,7 @@
       "question": "Which of the following is the Ideal Gas Equation ?",
       "answers": {
         "a": "PV = nRT",
-        "b": "P+ = RT at V2",
+        "b": "P+= RT",
         "c": "PV = RT n",
         "d": "aP = R + b V"
       },
@@ -19,12 +19,12 @@
       "difficulty": "beginner"
     },
     {
-      "question": "This is a Sample Question 2?",
+      "question": "What does the constant 'a' in the Van der Waals equation account for?"
       "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
+        "a": "Volume occupied by gas molecules",
+        "b": "Atmospheric pressure",
+        "c": "Intermolecular attraction",
+        "d": "Temperature variation"
       },
       "explanations": {
         "a": "Explanation 1  <a href='www.google.com'>here</a>",
@@ -34,6 +34,57 @@
       },
       "correctAnswer": "c",
       "difficulty": "beginner"
-    }
+    },
+    {
+      "question": "Which gas law assumption is corrected by introducing the constant 'b' in the Van der Waals equation?",
+      "answers": {
+        "a": "Gases exert no pressure",
+        "b": "Molecules have no volume",
+        "c": "Temperature has no effect",
+        "d": "Gases are always monoatomic"
+      },
+      "explanations": {
+        "a": "Explanation 1  <a href='www.google.com'>here</a>",
+        "b": "Explanation 2",
+        "c": "Explanation 2",
+        "d": "Explanation 2"
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "In which conditions does the Ideal Gas Law fail to accurately predict the behavior of real gases?",
+      "answers": {
+        "a": "High temperature and low pressure",
+        "b": "Low temperature and high pressure",
+        "c": "Low volume and low temperature",
+        "d": "High temperature and high pressure"
+      },
+      "explanations": {
+        "a": "Explanation 1  <a href='www.google.com'>here</a>",
+        "b": "Explanation 2",
+        "c": "Explanation 2",
+        "d": "Explanation 2"
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+   {
+      "question": "What is the primary purpose of comparing molar volumes using Van der Waals and Ideal Gas equations ",
+      "answers": {
+        "a": "To measure temperature changes",
+        "b": "To analyze real gas behavior vs ideal gas assumptions",
+        "c": "To calculate gas constant ",
+        "d": "To study liquid compressibility"
+      },
+      "explanations": {
+        "a": "Explanation 1  <a href='www.google.com'>here</a>",
+        "b": "Explanation 2",
+        "c": "Explanation 2",
+        "d": "Explanation 2"
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+   } 
   ]
 }
