@@ -3,9 +3,9 @@ EMPTY
 ### Subject Matter Experts
 | SNo. | Name | Email | Institute | ID |
 | :---: | :---: | :---: | :---: | :---: |
-| 1 | name | email | institute | id |
+| 1 | Ravish Rajput | ravishrajput@reck.ac.in | REC Kannauj |  |
 
 ### Developers
 | SNo. | Name | Email | Institute | ID |
 | :---: | :---: | :---: | :---: | :---: |
-| 1 | name | email | institute | id |
+| 1 | Mahak Bajpai | mahakbajpai77@gmail.com | REC Kannauj | |
