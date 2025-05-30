@@ -5,9 +5,9 @@
       "question": "Which of the following is the Ideal Gas Equation ?",
       "answers": {
         "a": "PV = nRT",
-        "b": "P+= RT",
-        "c": "PV = RT n",
-        "d": "aP = R + b V"
+        "b": "P+ a/V^2= RT",
+        "c": "PV = RT/n",
+        "d": "aP = RT/V + b "
       },
       "explanations": {
         "a": "Explanation 1  <a href='www.google.com'>here</a>",
