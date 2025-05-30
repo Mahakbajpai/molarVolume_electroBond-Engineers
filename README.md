@@ -14,7 +14,7 @@ This virtual lab simulates and compares the molar volume of gases using the idea
 :--|:--|
 <b> Institute | <b>  Rajkiya Engineering College Kannauj
 <b> Email id|     <b>  ravishrajput@reck.ac.in
-<b> Department |  Applied Science
+<b> Department |  Department of Applied Science and Humanities
 
 ### Contributors List
 
