@@ -2,12 +2,12 @@
   "version": 2.0,
   "questions": [
     {
-      "question": "This is a Sample Question 1?",
+      "question": "Which of the following is the Ideal Gas Equation ?",
       "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
+        "a": "PV = nRT",
+        "b": "P+ = RT at V2",
+        "c": "PV = RT n",
+        "d": "aP = R + b V"
       },
       "explanations": {
         "a": "Explanation 1  <a href='www.google.com'>here</a>",
