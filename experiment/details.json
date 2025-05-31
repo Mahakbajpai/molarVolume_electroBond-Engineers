@@ -1,0 +1,30 @@
+{
+
+   "details": [
+       {
+			"Experiment": "To compare the change in molar volume in vanderwaal and ideal gas equations of state",     
+			"Lab": "Soft Computing Lab",               
+			"Discipline": "Chemical Engineering",				 
+			"Technology": "HTML CSS Javascript"         
+       }
+   ],
+
+   "developer": [
+       {       
+      "Developer": "Mr. Ravish Rajput",         
+      "Institute": "REC Kannauj",         
+      "InstituteAcronym": "RECK"   
+       }
+   ],
+
+   "contributer": [
+       {       
+			"Contributer": "Mahak Bajpai",             
+      "Institute": "REC Kannauj",               
+			"InstituteAcronym": "RECK"         
+       }
+
+       
+   ]
+
+}
