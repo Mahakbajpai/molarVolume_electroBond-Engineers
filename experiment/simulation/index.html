@@ -1,516 +1,524 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gas Behavior Simulator</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.9.1/math.js"></script>
-    <style>
-        .custom-range::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 20px;
-            height: 20px;
-            background: #3b82f6;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-        .custom-range::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
-            background: #3b82f6;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-        .gas-card {
-            transition: all 0.3s ease;
-        }
-        .gas-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .gas-card.selected {
-            border: 2px solid #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
-            transform: translateY(-3px);
-        }
-        .gas-card.selected-blue {
-            background-color: #eff6ff;
-        }
-        .gas-card.selected-green {
-            background-color: #ecfdf5;
-        }
-        .gas-card.selected-purple {
-            background-color: #f5f3ff;
-        }
-        .gas-card.selected-yellow {
-            background-color: #fef9c3;
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Gas Behavior Simulator</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.9.1/math.js"></script>
+<style>
+/* Custom slider thumb styles */
+.custom-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #3b82f6;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.custom-range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #3b82f6;
+  border-radius: 50%;
+  cursor: pointer;
+}
+/* Gas card hover and selected styles */
+.gas-card {
+  transition: all 0.3s ease;
+}
+.gas-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.gas-card.selected {
+  border: 2px solid #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+  transform: translateY(-3px);
+}
+.gas-card.selected-blue {
+  background-color: #eff6ff;
+}
+.gas-card.selected-green {
+  background-color: #ecfdf5;
+}
+.gas-card.selected-purple {
+  background-color: #f5f3ff;
+}
+.gas-card.selected-yellow {
+  background-color: #fef9c3;
+}
+</style>
 </head>
 <body class="bg-gray-50 min-h-screen">
-    <div class="container mx-auto px-4 py-8">
-        <header class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-blue-800 mb-2">Gas Behavior Simulator</h1>
-            <p class="text-gray-600">Compare molar volume changes between Van der Waals and Ideal Gas models</p>
-        </header>
+<div class="container mx-auto px-4 py-8">
+<header class="text-center mb-8">
+<h1 class="text-3xl font-bold text-blue-800 mb-2">Gas Behavior Simulator</h1>
+<p class="text-gray-600">Compare molar volume changes between Van der Waals and Ideal Gas models</p>
+</header>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- Control Panel -->
-            <div class="bg-white rounded-xl shadow-lg p-6 col-span-1">
-                <h2 class="text-xl font-semibold text-gray-800 mb-4">Simulation Parameters</h2>
-                
-                <div class="mb-4">
-                    <h3 class="text-md font-medium text-gray-700 mb-2">Select Gas</h3>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div id="gas-CO2" class="gas-card bg-blue-50 rounded-lg p-3 cursor-pointer transition-all"
-                              onclick="selectGas('CO2', 3.592, 0.04267, this)">
-                            <div class="flex items-center">
-                                <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-2">
-                                    <span class="text-blue-600 font-bold text-sm">CO₂</span>
-                                </div>
-                                <div>
-                                    <p class="font-medium text-sm">Carbon Dioxide</p>
-                                    <p class="text-xs text-gray-500">a=3.592, b=0.04267</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="gas-NH3" class="gas-card bg-green-50 rounded-lg p-3 cursor-pointer transition-all"
-                              onclick="selectGas('NH3', 4.170, 0.03707, this)">
-                            <div class="flex items-center">
-                                <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-2">
-                                    <span class="text-green-600 font-bold text-sm">NH₃</span>
-                                </div>
-                                <div>
-                                    <p class="font-medium text-sm">Ammonia</p>
-                                    <p class="text-xs text-gray-500">a=4.170, b=0.03707</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="gas-CH4" class="gas-card bg-purple-50 rounded-lg p-3 cursor-pointer transition-all"
-                              onclick="selectGas('CH4', 2.253, 0.04278, this)">
-                            <div class="flex items-center">
-                                <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mr-2">
-                                    <span class="text-purple-600 font-bold text-sm">CH₄</span>
-                                </div>
-                                <div>
-                                    <p class="font-medium text-sm">Methane</p>
-                                    <p class="text-xs text-gray-500">a=2.253, b=0.04278</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="gas-O2" class="gas-card bg-yellow-50 rounded-lg p-3 cursor-pointer transition-all"
-                              onclick="selectGas('O2', 1.360, 0.03183, this)">
-                            <div class="flex items-center">
-                                <div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center mr-2">
-                                    <span class="text-yellow-600 font-bold text-sm">O₂</span>
-                                </div>
-                                <div>
-                                    <p class="font-medium text-sm">Oxygen</p>
-                                    <p class="text-xs text-gray-500">a=1.360, b=0.03183</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<!-- Virtual Lab Assistant Section -->
+<div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+<h2 class="text-xl font-semibold text-gray-800 mb-3">Lab Assistant</h2>
+<div id="assistant-instructions" class="mb-4 text-gray-700 text-sm min-h-[80px] border border-gray-300 rounded p-3 bg-gray-50">
+<p class="text-center text-gray-400">Click "Start Guidance" to begin the step-by-step instructions.</p>
+</div>
+<button id="start-guidance" class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-all text-sm">
+Start Guidance
+</button>
+</div>
 
-                <div class="mb-4">
-                    <label for="temperature" class="block text-md font-medium text-gray-700 mb-1">Temperature (K)</label>
-                    <input type="range" id="temperature" min="100" max="1000" value="300" step="10"
-                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer custom-range">
-                    <div class="flex justify-between mt-1">
-                        <span class="text-xs text-gray-500">100 K</span>
-                        <span id="tempValue" class="font-medium text-blue-600 text-sm">300 K</span>
-                        <span class="text-xs text-gray-500">1000 K</span>
-                    </div>
-                </div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Control Panel -->
+<div class="bg-white rounded-xl shadow-lg p-6 col-span-1">
+<h2 class="text-xl font-semibold text-gray-800 mb-4">Simulation Parameters</h2>
 
-                <div class="mb-4">
-                    <label for="pressureRange" class="block text-md font-medium text-gray-700 mb-1">Pressure Range (atm)</label>
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label for="minPressure" class="block text-xs text-gray-600 mb-1">Min Pressure</label>
-                            <input type="number" id="minPressure" min="0.1" max="100" value="1" step="0.1"
-                                    class="w-full px-2 py-1 text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                        </div>
-                        <div>
-                            <label for="maxPressure" class="block text-xs text-gray-600 mb-1">Max Pressure</label>
-                            <input type="number" id="maxPressure" min="1" max="500" value="100" step="1"
-                                    class="w-full px-2 py-1 text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                        </div>
-                    </div>
-                </div>
+<div class="mb-4">
+<h3 class="text-md font-medium text-gray-700 mb-2">Select Gas</h3>
+<div class="grid grid-cols-2 gap-2">
+<div id="gas-CO2" class="gas-card bg-blue-50 rounded-lg p-3 cursor-pointer transition-all" onclick="selectGas('CO2', 3.592, 0.04267, this)">
+<div class="flex items-center">
+<div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-2">
+<span class="text-blue-600 font-bold text-sm">CO₂</span>
+</div>
+<div>
+<p class="font-medium text-sm">Carbon Dioxide</p>
+<p class="text-xs text-gray-500">a=3.592, b=0.04267</p>
+</div>
+</div>
+</div>
+<div id="gas-NH3" class="gas-card bg-green-50 rounded-lg p-3 cursor-pointer transition-all" onclick="selectGas('NH3', 4.170, 0.03707, this)">
+<div class="flex items-center">
+<div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-2">
+<span class="text-green-600 font-bold text-sm">NH₃</span>
+</div>
+<div>
+<p class="font-medium text-sm">Ammonia</p>
+<p class="text-xs text-gray-500">a=4.170, b=0.03707</p>
+</div>
+</div>
+</div>
+<div id="gas-CH4" class="gas-card bg-purple-50 rounded-lg p-3 cursor-pointer transition-all" onclick="selectGas('CH4', 2.253, 0.04278, this)">
+<div class="flex items-center">
+<div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mr-2">
+<span class="text-purple-600 font-bold text-sm">CH₄</span>
+</div>
+<div>
+<p class="font-medium text-sm">Methane</p>
+<p class="text-xs text-gray-500">a=2.253, b=0.04278</p>
+</div>
+</div>
+</div>
+<div id="gas-O2" class="gas-card bg-yellow-50 rounded-lg p-3 cursor-pointer transition-all" onclick="selectGas('O2', 1.360, 0.03183, this)">
+<div class="flex items-center">
+<div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center mr-2">
+<span class="text-yellow-600 font-bold text-sm">O₂</span>
+</div>
+<div>
+<p class="font-medium text-sm">Oxygen</p>
+<p class="text-xs text-gray-500">a=1.360, b=0.03183</p>
+</div>
+</div>
+</div>
+</div>
+</div>
 
-                <div class="mb-4">
-                    <label for="stepSize" class="block text-md font-medium text-gray-700 mb-1">Pressure Step Size (atm)</label>
-                    <input type="number" id="stepSize" min="0.1" max="20" value="5" step="0.1"
-                            class="w-full px-2 py-1 text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                </div>
+<div class="mb-4">
+<label for="temperature" class="block text-md font-medium text-gray-700 mb-1">Temperature (K)</label>
+<input type="range" id="temperature" min="100" max="1000" value="300" step="10" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer custom-range" />
+<div class="flex justify-between mt-1">
+<span class="text-xs text-gray-500">100 K</span>
+<span id="tempValue" class="font-medium text-blue-600 text-sm">300 K</span>
+<span class="text-xs text-gray-500">1000 K</span>
+</div>
+</div>
 
-                <button onclick="runSimulation()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-all text-sm">
-                    Run Simulation
-                </button>
-            </div>
+<div class="mb-4">
+<label for="pressureRange" class="block text-md font-medium text-gray-700 mb-1">Pressure Range (atm)</label>
+<div class="grid grid-cols-2 gap-3">
+<div>
+<label for="minPressure" class="block text-xs text-gray-600 mb-1">Min Pressure</label>
+<input type="number" id="minPressure" min="0.1" max="100" value="1" step="0.1" class="w-full px-2 py-1 text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
+</div>
+<div>
+<label for="maxPressure" class="block text-xs text-gray-600 mb-1">Max Pressure</label>
+<input type="number" id="maxPressure" min="1" max="500" value="100" step="1" class="w-full px-2 py-1 text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
+</div>
+</div>
+</div>
 
-            <!-- Results and Chart -->
-            <div class="bg-white rounded-xl shadow-lg p-6 col-span-2">
-                <h2 class="text-xl font-semibold text-gray-800 mb-4">Results</h2>
-                
-                <div class="mb-4">
-                    <div class="flex items-center justify-between mb-2">
-                        <h3 class="text-md font-medium text-gray-700">Current Parameters</h3>
-                        <div id="currentParams" class="text-xs text-gray-500">
-                            No gas selected
-                        </div>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
-                        <div class="bg-blue-50 rounded-lg p-3">
-                            <h4 class="font-medium text-blue-800 mb-1 text-sm">Ideal Gas Law</h4>
-                            <p class="text-xs text-gray-700">PV = nRT</p>
-                            <p class="text-xs text-gray-700">V<sub>m</sub> = RT/P</p>
-                        </div>
-                        <div class="bg-purple-50 rounded-lg p-3">
-                            <h4 class="font-medium text-purple-800 mb-1 text-sm">Van der Waals Equation</h4>
-                            <p class="text-xs text-gray-700">[P + a(n/V)²](V - nb) = nRT</p>
-                            <p class="text-xs text-gray-700">For 1 mole: [P + a/V<sub>m</sub>²](V<sub>m</sub> - b) = RT</p>
-                        </div>
-                    </div>
-                </div>
+<div class="mb-4">
+<label for="stepSize" class="block text-md font-medium text-gray-700 mb-1">Pressure Step Size (atm)</label>
+<input type="number" id="stepSize" min="0.1" max="20" value="5" step="0.1" class="w-full px-2 py-1 text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
+</div>
 
-                <div class="mb-4" style="height: 250px;">
-                    <canvas id="resultsChart"></canvas>
-                </div>
+<button onclick="runSimulation()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-all text-sm">
+Run Simulation
+</button>
+</div>
 
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200 text-xs">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th scope="col" class="px-3 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">P (atm)</th>
-                                <th scope="col" class="px-3 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Ideal V<sub>m</sub></th>
-                                <th scope="col" class="px-3 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">VdW V<sub>m</sub></th>
-                                <th scope="col" class="px-3 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Deviation</th>
-                            </tr>
-                        </thead>
-                        <tbody id="resultsTable" class="bg-white divide-y divide-gray-200">
-                            <tr>
-                                <td colspan="4" class="px-3 py-2 text-center text-gray-500">Run simulation to see results</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+<!-- Results and Chart -->
+<div class="bg-white rounded-xl shadow-lg p-6 col-span-2">
+<h2 class="text-xl font-semibold text-gray-800 mb-4">Results</h2>
 
-        <!-- Observations Section -->
-        <div class="bg-white rounded-xl shadow-lg p-6 mt-6">
-            <h2 class="text-xl font-semibold text-gray-800 mb-3">Observations and Analysis</h2>
-            <div id="observations" class="text-gray-700 text-sm">
-                <p class="mb-3">This simulator compares the molar volume (V<sub>m</sub>) calculated by the Ideal Gas Law and Van der Waals equation of state for real gases.</p>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <div class="bg-green-50 rounded-lg p-3">
-                        <h3 class="font-medium text-green-800 mb-1 text-sm">Low Pressure Behavior</h3>
-                        <p class="text-xs">At low pressures, both models give similar values because:</p>
-                        <ul class="list-disc pl-4 mt-1 space-y-1 text-xs">
-                            <li>Molecular volume becomes negligible compared to total volume (V<sub>m</sub> ≫ b)</li>
-                            <li>Intermolecular forces are insignificant due to large average distance between molecules</li>
-                        </ul>
-                    </div>
-                    <div class="bg-red-50 rounded-lg p-3">
-                        <h3 class="font-medium text-red-800 mb-1 text-sm">High Pressure Behavior</h3>
-                        <p class="text-xs">At high pressures, Van der Waals model shows significant deviation because:</p>
-                        <ul class="list-disc pl-4 mt-1 space-y-1 text-xs">
-                            <li>Molecular volume (b) becomes significant compared to total volume</li>
-                            <li>Intermolecular attractive forces (a) become important</li>
-                            <li>Real gases become less compressible than ideal gases</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <p class="text-xs">The Van der Waals equation provides a more accurate description of real gas behavior by accounting for:</p>
-                <ol class="list-decimal pl-4 mt-1 space-y-1 text-xs">
-                    <li>Finite molecular size (excluded volume term b)</li>
-                    <li>Intermolecular attractive forces (pressure correction term a)</li>
-                </ol>
-                
-                <p class="mt-3 text-xs font-medium">Run the simulation to observe these effects for different gases at various temperatures and pressures.</p>
-            </div>
-        </div>
-    </div>
+<div class="mb-4">
+<div class="flex items-center justify-between mb-2">
+<h3 class="text-md font-medium text-gray-700">Current Parameters</h3>
+<div id="currentParams" class="text-xs text-gray-500">No gas selected</div>
+</div>
 
-    <script>
-        // Global variables
-        let selectedGas = null;
-        let chart = null;
-        const R = 0.0821; // Gas constant in L·atm/(mol·K)
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+<div class="bg-blue-50 rounded-lg p-3">
+<h4 class="font-medium text-blue-800 mb-1 text-sm">Ideal Gas Law</h4>
+<p class="text-xs text-gray-700">PV = nRT</p>
+<p class="text-xs text-gray-700">V<sub>m</sub> = RT/P</p>
+</div>
+<div class="bg-purple-50 rounded-lg p-3">
+<h4 class="font-medium text-purple-800 mb-1 text-sm">Van der Waals Equation</h4>
+<p class="text-xs text-gray-700">[P + a(n/V)²](V - nb) = nRT</p>
+<p class="text-xs text-gray-700">For 1 mole: [P + a/V<sub>m</sub>²](V<sub>m</sub> - b) = RT</p>
+</div>
+</div>
+</div>
 
-        // Initialize event listeners
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('temperature').addEventListener('input', function() {
-                document.getElementById('tempValue').textContent = this.value + ' K';
-            });
-        });
+<div class="mb-4" style="height: 250px;">
+<canvas id="resultsChart"></canvas>
+</div>
 
-        // Gas selection function
-        function selectGas(name, a, b, element) {
-            selectedGas = { name, a, b };
-            document.getElementById('currentParams').innerHTML = `
-                <span class="font-medium">${name}</span> | 
-                a = ${a} L²·atm/mol² | 
-                b = ${b} L/mol | 
-                T = ${document.getElementById('temperature').value} K
-            `;
+<div class="overflow-x-auto">
+<table class="min-w-full divide-y divide-gray-200 text-xs">
+<thead class="bg-gray-50">
+<tr>
+<th scope="col" class="px-3 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">P (atm)</th>
+<th scope="col" class="px-3 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Ideal V<sub>m</sub></th>
+<th scope="col" class="px-3 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">VdW V<sub>m</sub></th>
+<th scope="col" class="px-3 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Deviation</th>
+</tr>
+</thead>
+<tbody id="resultsTable" class="bg-white divide-y divide-gray-200">
+<tr>
+<td colspan="4" class="px-3 py-2 text-center text-gray-500">Run simulation to see results</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
 
-            // Remove all selection classes first
-            document.querySelectorAll('.gas-card').forEach(card => {
-                card.classList.remove('selected', 'selected-blue', 'selected-green', 'selected-purple', 'selected-yellow');
-            });
+<!-- Observations Section -->
+<div class="bg-white rounded-xl shadow-lg p-6 mt-6">
+<h2 class="text-xl font-semibold text-gray-800 mb-3">Observations and Analysis</h2>
+<div id="observations" class="text-gray-700 text-sm">
+<p class="mb-3">This simulator compares the molar volume (V<sub>m</sub>) calculated by the Ideal Gas Law and Van der Waals equation of state for real gases.</p>
 
-            // Add selection class to clicked card
-            element.classList.add('selected');
-            
-            // Add color-specific selection class
-            if (name === 'CO2') {
-                element.classList.add('selected-blue');
-            } else if (name === 'NH3') {
-                element.classList.add('selected-green');
-            } else if (name === 'CH4') {
-                element.classList.add('selected-purple');
-            } else if (name === 'O2') {
-                element.classList.add('selected-yellow');
-            }
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+<div class="bg-green-50 rounded-lg p-3">
+<h3 class="font-medium text-green-800 mb-1 text-sm">Low Pressure Behavior</h3>
+<p class="text-xs">At low pressures, both models give similar values because:</p>
+<ul class="list-disc pl-4 mt-1 space-y-1 text-xs">
+<li>Molecular volume becomes negligible compared to total volume (V<sub>m</sub> ≫ b)</li>
+<li>Intermolecular forces are insignificant due to large average distance between molecules</li>
+</ul>
+</div>
+<div class="bg-red-50 rounded-lg p-3">
+<h3 class="font-medium text-red-800 mb-1 text-sm">High Pressure Behavior</h3>
+<p class="text-xs">At high pressures, Van der Waals model shows significant deviation because:</p>
+<ul class="list-disc pl-4 mt-1 space-y-1 text-xs">
+<li>Molecular volume (b) becomes significant compared to total volume</li>
+<li>Intermolecular attractive forces (a) become important</li>
+<li>Real gases become less compressible than ideal gases</li>
+</ul>
+</div>
+</div>
+
+<p class="text-xs">The Van der Waals equation provides a more accurate description of real gas behavior by accounting for:</p>
+<ol class="list-decimal pl-4 mt-1 space-y-1 text-xs">
+<li>Finite molecular size (excluded volume term b)</li>
+<li>Intermolecular attractive forces (pressure correction term a)</li>
+</ol>
+
+<p class="mt-3 text-xs font-medium">Run the simulation to observe these effects for different gases at various temperatures and pressures.</p>
+</div>
+</div>
+
+<script>
+// Global variables
+let selectedGas = null;
+let chart = null;
+const R = 0.0821; // Gas constant in L·atm/(mol·K)
+
+// Initialize event listeners
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('temperature').addEventListener('input', function() {
+        document.getElementById('tempValue').textContent = this.value + ' K';
+    });
+});
+
+// Gas selection function
+function selectGas(name, a, b, element) {
+    selectedGas = { name, a, b };
+    document.getElementById('currentParams').innerHTML = `
+        <span class="font-medium">${name}</span> | 
+        a = ${a} L²·atm/mol² | 
+        b = ${b} L/mol | 
+        T = ${document.getElementById('temperature').value} K
+    `;
+
+    // Remove selection classes
+    document.querySelectorAll('.gas-card').forEach(card => {
+        card.classList.remove('selected', 'selected-blue', 'selected-green', 'selected-purple', 'selected-yellow');
+    });
+    // Add selected class and color
+    element.classList.add('selected');
+    if (name === 'CO2') {
+        element.classList.add('selected-blue');
+    } else if (name === 'NH3') {
+        element.classList.add('selected-green');
+    } else if (name === 'CH4') {
+        element.classList.add('selected-purple');
+    } else if (name === 'O2') {
+        element.classList.add('selected-yellow');
+    }
+}
+
+// Ideal gas molar volume
+function idealGasVm(P, T) {
+    return (R * T) / P;
+}
+
+// Van der Waals molar volume using Newton-Raphson
+function vanderWaalsVm(P, T, a, b, initialGuess = null) {
+    const maxIterations = 100;
+    const tolerance = 1e-6;
+    let Vm = initialGuess || idealGasVm(P, T);
+    for (let i = 0; i < maxIterations; i++) {
+        const f = (P + a/(Vm*Vm)) * (Vm - b) - R*T;
+        const df = P - (a*(Vm - 2*b))/(Vm*Vm*Vm) + (2*a*b)/(Vm*Vm*Vm*Vm);
+        const newVm = Vm - f/df;
+        if (Math.abs(newVm - Vm) < tolerance) {
+            return newVm;
         }
+        Vm = newVm;
+    }
+    return Vm;
+}
 
-        // Calculate ideal gas molar volume
-        function idealGasVm(P, T) {
-            return (R * T) / P;
-        }
+// Run simulation
+function runSimulation() {
+    if (!selectedGas) {
+        alert('Please select a gas first');
+        return;
+    }
+    const T = parseFloat(document.getElementById('temperature').value);
+    const minP = parseFloat(document.getElementById('minPressure').value);
+    const maxP = parseFloat(document.getElementById('maxPressure').value);
+    const step = parseFloat(document.getElementById('stepSize').value);
+    if (minP >= maxP) {
+        alert('Maximum pressure must be greater than minimum pressure');
+        return;
+    }
+    const pressures = [];
+    for (let P = minP; P <= maxP; P += step) {
+        pressures.push(P);
+    }
+    const results = pressures.map(P => {
+        const idealVm = idealGasVm(P, T);
+        const vdwVm = vanderWaalsVm(P, T, selectedGas.a, selectedGas.b, idealVm);
+        const deviation = ((vdwVm - idealVm) / idealVm) * 100;
+        return { pressure: P, idealVm, vdwVm, deviation };
+    });
+    updateResultsTable(results);
+    updateChart(results, selectedGas.name, T);
+    updateObservations(results);
+}
 
-        // Calculate Van der Waals molar volume using Newton-Raphson method
-        function vanderWaalsVm(P, T, a, b, initialGuess = null) {
-            const maxIterations = 100;
-            const tolerance = 1e-6;
-            
-            // Use ideal gas as initial guess if not provided
-            let Vm = initialGuess || idealGasVm(P, T);
+// Update table
+function updateResultsTable(results) {
+    const tableBody = document.getElementById('resultsTable');
+    tableBody.innerHTML = '';
+    results.forEach(r => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td class="px-3 py-2 whitespace-nowrap text-gray-900">${r.pressure.toFixed(2)}</td>
+            <td class="px-3 py-2 whitespace-nowrap text-gray-900">${r.idealVm.toFixed(4)}</td>
+            <td class="px-3 py-2 whitespace-nowrap text-gray-900">${r.vdwVm.toFixed(4)}</td>
+            <td class="px-3 py-2 whitespace-nowrap ${Math.abs(r.deviation) > 5 ? 'text-red-600' : 'text-gray-900'}">
+                ${r.deviation.toFixed(2)}%
+            </td>
+        `;
+        tableBody.appendChild(row);
+    });
+}
 
-            for (let i = 0; i < maxIterations; i++) {
-                const f = (P + a/(Vm*Vm)) * (Vm - b) - R*T;
-                const df = P - (a*(Vm - 2*b))/(Vm*Vm*Vm) + (2*a*b)/(Vm*Vm*Vm*Vm);
-                
-                const newVm = Vm - f/df;
-                
-                if (Math.abs(newVm - Vm) < tolerance) {
-                    return newVm;
-                }
-                
-                Vm = newVm;
-            }
-            
-            return Vm; // Return best estimate if convergence not reached
-        }
-
-        // Main simulation function
-        function runSimulation() {
-            if (!selectedGas) {
-                alert('Please select a gas first');
-                return;
-            }
-            
-            const T = parseFloat(document.getElementById('temperature').value);
-            const minP = parseFloat(document.getElementById('minPressure').value);
-            const maxP = parseFloat(document.getElementById('maxPressure').value);
-            const step = parseFloat(document.getElementById('stepSize').value);
-
-            if (minP >= maxP) {
-                alert('Maximum pressure must be greater than minimum pressure');
-                return;
-            }
-
-            // Generate pressure points
-            const pressures = [];
-            for (let P = minP; P <= maxP; P += step) {
-                pressures.push(P);
-            }
-
-            // Calculate results
-            const results = pressures.map(P => {
-                const idealVm = idealGasVm(P, T);
-                const vdwVm = vanderWaalsVm(P, T, selectedGas.a, selectedGas.b, idealVm);
-                const deviation = ((vdwVm - idealVm) / idealVm) * 100;
-                
-                return {
-                    pressure: P,
-                    idealVm,
-                    vdwVm,
-                    deviation
-                };
-            });
-
-            // Update results table
-            updateResultsTable(results);
-
-            // Update chart
-            updateChart(results, selectedGas.name, T);
-
-            // Update observations with specific data
-            updateObservations(results);
-        }
-
-        // Update results table
-        function updateResultsTable(results) {
-            const tableBody = document.getElementById('resultsTable');
-            tableBody.innerHTML = '';
-            
-            results.forEach(result => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td class="px-3 py-2 whitespace-nowrap text-gray-900">${result.pressure.toFixed(2)}</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-gray-900">${result.idealVm.toFixed(4)}</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-gray-900">${result.vdwVm.toFixed(4)}</td>
-                    <td class="px-3 py-2 whitespace-nowrap ${Math.abs(result.deviation) > 5 ? 'text-red-600' : 'text-gray-900'}">
-                        ${result.deviation.toFixed(2)}%
-                    </td>
-                `;
-                tableBody.appendChild(row);
-            });
-        }
-
-        // Update chart
-        function updateChart(results, gasName, temperature) {
-            const ctx = document.getElementById('resultsChart').getContext('2d');
-            
-            // Destroy previous chart if exists
-            if (chart) {
-                chart.destroy();
-            }
-
-            // Prepare data
-            const labels = results.map(r => r.pressure);
-            const idealData = results.map(r => r.idealVm);
-            const vdwData = results.map(r => r.vdwVm);
-
-            chart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [
-                        {
-                            label: 'Ideal Gas Law',
-                            data: idealData,
-                            borderColor: 'rgb(59, 130, 246)',
-                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                            borderWidth: 2,
-                            tension: 0.1,
-                            pointRadius: 3
-                        },
-                        {
-                            label: 'Van der Waals',
-                            data: vdwData,
-                            borderColor: 'rgb(124, 58, 237)',
-                            backgroundColor: 'rgba(124, 58, 237, 0.1)',
-                            borderWidth: 2,
-                            tension: 0.1,
-                            pointRadius: 3
-                        }
-                    ]
+// Update chart
+function updateChart(results, gasName, temperature) {
+    const ctx = document.getElementById('resultsChart').getContext('2d');
+    if (chart) {
+        chart.destroy();
+    }
+    const labels = results.map(r => r.pressure);
+    const idealData = results.map(r => r.idealVm);
+    const vdwData = results.map(r => r.vdwVm);
+    chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Ideal Gas Law',
+                    data: idealData,
+                    borderColor: 'rgb(59, 130, 246)',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    borderWidth: 2,
+                    tension: 0.1,
+                    pointRadius: 3
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: `Molar Volume vs Pressure for ${gasName} at ${temperature} K`,
-                            font: {
-                                size: 14
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return `${context.dataset.label}: ${context.raw.toFixed(4)} L/mol`;
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Pressure (atm)'
-                            }
-                        },
-                        y: {
-                            title: {
-                                display: true,
-                                text: 'Molar Volume (L/mol)'
-                            }
+                {
+                    label: 'Van der Waals',
+                    data: vdwData,
+                    borderColor: 'rgb(124, 58, 237)',
+                    backgroundColor: 'rgba(124, 58, 237, 0.1)',
+                    borderWidth: 2,
+                    tension: 0.1,
+                    pointRadius: 3
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: `Molar Volume vs Pressure for ${gasName} at ${temperature} K`,
+                    font: { size: 14 }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `${context.dataset.label}: ${context.raw.toFixed(4)} L/mol`;
                         }
                     }
                 }
-            });
+            },
+            scales: {
+                x: { title: { display: true, text: 'Pressure (atm)' } },
+                y: { title: { display: true, text: 'Molar Volume (L/mol)' } }
+            }
         }
+    });
+}
 
-        // Update observations with specific data
-        function updateObservations(results) {
-            const observationsDiv = document.getElementById('observations');
-            const firstResult = results[0];
-            const lastResult = results[results.length - 1];
-            
-            observationsDiv.innerHTML = `
-                <p class="mb-3">This simulator compares the molar volume (V<sub>m</sub>) calculated by the Ideal Gas Law and Van der Waals equation of state for ${selectedGas.name} at ${document.getElementById('temperature').value} K.</p>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <div class="bg-green-50 rounded-lg p-3">
-                        <h3 class="font-medium text-green-800 mb-1 text-sm">Low Pressure Behavior (${firstResult.pressure.toFixed(1)} atm)</h3>
-                        <p class="text-xs">At low pressures, both models give similar values:</p>
-                        <ul class="list-disc pl-4 mt-1 space-y-1 text-xs">
-                            <li>Ideal V<sub>m</sub> = ${firstResult.idealVm.toFixed(4)} L/mol</li>
-                            <li>VdW V<sub>m</sub> = ${firstResult.vdwVm.toFixed(4)} L/mol</li>
-                            <li>Deviation = ${firstResult.deviation.toFixed(2)}%</li>
-                        </ul>
-                        <p class="mt-2 text-xs">This occurs because:</p>
-                        <ul class="list-disc pl-4 mt-1 space-y-1 text-xs">
-                            <li>Molecular volume becomes negligible (V<sub>m</sub> ≫ b)</li>
-                            <li>Intermolecular forces are insignificant</li>
-                        </ul>
-                    </div>
-                    <div class="bg-red-50 rounded-lg p-3">
-                        <h3 class="font-medium text-red-800 mb-1 text-sm">High Pressure Behavior (${lastResult.pressure.toFixed(1)} atm)</h3>
-                        <p class="text-xs">At high pressures, significant deviation occurs:</p>
-                        <ul class="list-disc pl-4 mt-1 space-y-1 text-xs">
-                            <li>Ideal V<sub>m</sub> = ${lastResult.idealVm.toFixed(4)} L/mol</li>
-                            <li>VdW V<sub>m</sub> = ${lastResult.vdwVm.toFixed(4)} L/mol</li>
-                            <li>Deviation = ${lastResult.deviation.toFixed(2)}%</li>
-                        </ul>
-                        <p class="mt-2 text-xs">This occurs because:</p>
-                        <ul class="list-disc pl-4 mt-1 space-y-1 text-xs">
-                            <li>Molecular volume (b) becomes significant</li>
-                            <li>Intermolecular attractive forces (a) become important</li>
-                            <li>Real gases become less compressible than ideal gases</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <p class="text-xs">The Van der Waals equation (a = ${selectedGas.a}, b = ${selectedGas.b}) provides a more accurate description by accounting for:</p>
-                <ol class="list-decimal pl-4 mt-1 space-y-1 text-xs">
-                    <li>Finite molecular size (excluded volume term b)</li>
-                    <li>Intermolecular attractive forces (pressure correction term a)</li>
-                </ol>
-                
-                <div class="mt-4 p-3 bg-blue-50 rounded-lg">
-                    <h3 class="font-medium text-blue-800 mb-1 text-sm">Key Observations</h3>
-                    <ul class="list-disc pl-4 space-y-1 text-xs">
-                        <li>The deviation between models increases with pressure</li>
-                        <li>At very high pressures, the Van der Waals V<sub>m</sub> approaches b (${selectedGas.b} L/mol for ${selectedGas.name})</li>
-                        <li>The temperature affects the deviation pattern - higher temperatures reduce deviations</li>
-                    </ul>
-                </div>
-            `;
+// Update observations with detailed data
+function updateObservations(results) {
+    const obsDiv = document.getElementById('observations');
+    const first = results[0];
+    const last = results[results.length -1];
+    obsDiv.innerHTML = `
+        <p class="mb-3">This simulator compares the molar volume (V<sub>m</sub>) calculated by the Ideal Gas Law and Van der Waals equation of state for ${selectedGas.name} at ${document.getElementById('temperature').value} K.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div class="bg-green-50 rounded-lg p-3">
+                <h3 class="font-medium text-green-800 mb-1 text-sm">Low Pressure Behavior (${first.pressure.toFixed(1)} atm)</h3>
+                <p class="text-xs">At low pressures, both models give similar values:</p>
+                <ul class="list-disc pl-4 mt-1 space-y-1 text-xs">
+                    <li>Ideal V<sub>m</sub> = ${first.idealVm.toFixed(4)} L/mol</li>
+                    <li>VdW V<sub>m</sub> = ${first.vdwVm.toFixed(4)} L/mol</li>
+                    <li>Deviation = ${first.deviation.toFixed(2)}%</li>
+                </ul>
+                <p class="mt-2 text-xs">This occurs because:</p>
+                <ul class="list-disc pl-4 mt-1 space-y-1 text-xs">
+                    <li>Molecular volume becomes negligible (V<sub>m</sub> ≫ b)</li>
+                    <li>Intermolecular forces are insignificant</li>
+                </ul>
+            </div>
+            <div class="bg-red-50 rounded-lg p-3">
+                <h3 class="font-medium text-red-800 mb-1 text-sm">High Pressure Behavior (${last.pressure.toFixed(1)} atm)</h3>
+                <p class="text-xs">At high pressures, significant deviation occurs:</p>
+                <ul class="list-disc pl-4 mt-1 space-y-1 text-xs">
+                    <li>Ideal V<sub>m</sub> = ${last.idealVm.toFixed(4)} L/mol</li>
+                    <li>VdW V<sub>m</sub> = ${last.vdwVm.toFixed(4)} L/mol</li>
+                    <li>Deviation = ${last.deviation.toFixed(2)}%</li>
+                </ul>
+                <p class="mt-2 text-xs">This occurs because:</p>
+                <ul class="list-disc pl-4 mt-1 space-y-1 text-xs">
+                    <li>Molecular volume (b) becomes significant</li>
+                    <li>Intermolecular attractive forces (a) become important</li>
+                    <li>Real gases become less compressible than ideal gases</li>
+                </ul>
+            </div>
+        </div>
+        <p class="text-xs">The Van der Waals equation (a = ${selectedGas.a}, b = ${selectedGas.b}) provides a more accurate description by accounting for:</p>
+        <ol class="list-decimal pl-4 mt-1 space-y-1 text-xs">
+            <li>Finite molecular size (excluded volume term b)</li>
+            <li>Intermolecular attractive forces (pressure correction term a)</li>
+        </ol>
+        <div class="mt-4 p-3 bg-blue-50 rounded-lg">
+            <h3 class="font-medium text-blue-800 mb-1 text-sm">Key Observations</h3>
+            <ul class="list-disc pl-4 space-y-1 text-xs">
+                <li>The deviation between models increases with pressure</li>
+                <li>At very high pressures, the Van der Waals V<sub>m</sub> approaches b (${selectedGas.b} L/mol for ${selectedGas.name})</li>
+                <li>The temperature affects the deviation pattern - higher temperatures reduce deviations</li>
+            </ul>
+        </div>
+    `;
+}
+
+// Guidance Logic
+const instructions = [
+    { text: "Welcome to the Gas Behavior Simulator. Let's begin by selecting a gas from the options above." },
+    { text: "Click on one of the gas cards to select a gas, such as Carbon Dioxide, Ammonia, Methane, or Oxygen." },
+    { text: "Adjust the temperature slider to set the desired temperature in Kelvin, between 100 K and 1000 K." },
+    { text: "Set the pressure range by entering minimum and maximum pressure values in atm, and specify the pressure step size." },
+    { text: "Once you've set all parameters, click the 'Run Simulation' button to see the results." },
+    { text: "The results will display molar volumes calculated by both the ideal gas law and Van der Waals equation, along with a chart and a table." },
+    { text: "You can explore how these models differ at various pressures, especially at high pressures where deviations are more significant." },
+    { text: "Click 'Start Guidance' again to repeat these instructions." }
+];
+
+let currentInstructionIndex = 0;
+const instructionDiv = document.getElementById('assistant-instructions');
+const startButton = document.getElementById('start-guidance');
+
+const synth = window.speechSynthesis;
+
+function speak(text) {
+    if (synth.speaking) {
+        synth.cancel();
+    }
+    const utterThis = new SpeechSynthesisUtterance(text);
+    synth.speak(utterThis);
+}
+
+function showInstruction(index) {
+    instructionDiv.innerHTML = `<p>${instructions[index].text}</p>`;
+    speak(instructions[index].text);
+}
+
+function startGuidance() {
+    currentInstructionIndex = 0;
+    showInstruction(currentInstructionIndex);
+    proceedInstructions();
+}
+
+function proceedInstructions() {
+    if (currentInstructionIndex >= instructions.length - 1) {
+        return;
+    }
+
+    const checkSpeaking = setInterval(() => {
+        if (!synth.speaking) {
+            clearInterval(checkSpeaking);
+            currentInstructionIndex++;
+            showInstruction(currentInstructionIndex);
+            setTimeout(proceedInstructions, 4000);
         }
-    </script>
+    }, 500);
+}
+
+// Event Listener for Guidance Button
+document.getElementById('start-guidance').addEventListener('click', startGuidance);
+</script>
+</div>
 </body>
 </html>
