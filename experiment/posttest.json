@@ -2,12 +2,12 @@
   "version": 2.0,
   "questions": [
     {
-      "question": "This is a Sample Question 1?",
+      "question": "Which equation gave a smaller value for molar volume at high pressure?",
       "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
+        "a": "Ideal Gas Equation",
+        "b": " Van der Waals Equation",
+        "c": "Both gave same value",
+        "d": " Cannot be determined"
       },
       "explanations": {
         "a": "Explanation 1  <a href='www.google.com'>here</a>",
@@ -15,16 +15,67 @@
         "c": "Explanation 2",
         "d": "Explanation 2"
       },
-      "correctAnswer": "a",
+      "correctAnswer": "b",
       "difficulty": "beginner"
     },
     {
-      "question": "This is a Sample Question 2?",
+      "question": "Why does the Van der Waals equation predict a lower molar volume than the Ideal Gas equation at high pressures?",
       "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
+        "a": "It ignores intermolecular forces",
+        "b": "It assumes zero molecular volume",
+        "c": " It accounts for molecular volume and attractive forces",
+        "d": " It assumes gases behave ideally"
+      },
+      "explanations": {
+        "a": "Explanation 1  <a href='www.google.com'>here</a>",
+        "b": "Explanation 2",
+        "c": "Explanation 2",
+        "d": "Explanation 2"
+      },
+      "correctAnswer": "c",
+      "difficulty": "beginner"
+    },
+     {
+      "question": " Based on the experiment, when do the Ideal Gas and Van der Waals equations give nearly the same molar volume?",
+      "answers": {
+        "a": "At high pressure and low temperature",
+        "b": " At low pressure and high temperature",
+        "c": " At all conditions",
+        "d": "At low pressure and low temperature"
+      },
+      "explanations": {
+        "a": "Explanation 1  <a href='www.google.com'>here</a>",
+        "b": "Explanation 2",
+        "c": "Explanation 2",
+        "d": "Explanation 2"
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+     {
+      "question": "If your calculated molar volume using the Van der Waals equation is significantly different from expected values, which factor is most likely responsible?",
+      "answers": {
+        "a": "Incorrect value of R",
+        "b": "Ignoring temperature in calculation",
+        "c": " Incorrect 'a' and 'b' constants for the gas used",
+        "d": "Constant volume assumption"
+      },
+      "explanations": {
+        "a": "Explanation 1  <a href='www.google.com'>here</a>",
+        "b": "Explanation 2",
+        "c": "Explanation 2",
+        "d": "Explanation 2"
+      },
+      "correctAnswer": "c",
+      "difficulty": "beginner"
+    },
+     {
+      "question": "What can you conclude from the experiment about real gases compared to ideal gases?",
+      "answers": {
+        "a": " Real gases always behave like ideal gases",
+        "b": " Ideal gas law works well under all conditions",
+        "c": "Real gases deviate from ideal behavior under non-ideal conditions",
+        "d": " Van der Waals equation is not useful for real gases"
       },
       "explanations": {
         "a": "Explanation 1  <a href='www.google.com'>here</a>",
