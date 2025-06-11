@@ -1,11 +1,11 @@
-# 🧪 Procedure: Gas Behavior Simulator
+# Procedure: Gas Behavior Simulator
 
-## 🎯 Objective
+## Objective
 To compare the molar volume of a real gas calculated using the **Van der Waals Equation** with that of an **ideal gas**, under varying pressure conditions.
 
 ---
 
-## 🔧 Step-by-Step Instructions
+##  Step-by-Step Instructions
 
 ### 1. Launch the Simulator
 Open the **Gas Behavior Simulator** in a web browser. Ensure a stable internet connection to load all necessary libraries (e.g., Chart.js, Tailwind CSS).
@@ -17,7 +17,7 @@ Choose one of the four gases displayed on the simulator interface:
 - **CH₄ (Methane)**
 - **O₂ (Oxygen)**
 
-✅ The simulator will automatically fill in the Van der Waals constants `a` and `b` for the selected gas.
+ The simulator will automatically fill in the Van der Waals constants `a` and `b` for the selected gas.
 
 ### 3. Set the Temperature
 Use the **temperature slider** to select the temperature in Kelvin (K).
@@ -30,7 +30,7 @@ Enter values for:
 - **Maximum Pressure (atm)** – e.g., `100`
 - **Pressure Step Size (atm)** – e.g., `5`
 
-🔁 This defines the range and resolution of pressure values over which the simulation runs.
+This defines the range and resolution of pressure values over which the simulation runs.
 
 ### 5. Run the Simulation
 Click the **“Run Simulation”** button to calculate:
@@ -53,7 +53,7 @@ Click the **“Run Simulation”** button to calculate:
 
 ---
 
-## 📘 Key Equations Used
+##  Key Equations Used
 
 ### Ideal Gas Law
 \[
