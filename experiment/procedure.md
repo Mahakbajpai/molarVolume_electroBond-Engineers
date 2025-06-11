@@ -67,10 +67,10 @@ V_m = \frac{RT}{P}
 
 ---
 
-## 🧾 Conclusion Tips
+## Conclusion Tips
 - At **low pressure**: Real and ideal gases behave similarly.
 - At **high pressure**: Real gases deviate due to **finite molecular volume** and **intermolecular forces**.
 
 ---
 
-> 💡 Use this procedure to guide your exploration of real gas behavior and to understand deviations from ideality in high-pressure environments.
+>  Use this procedure to guide your exploration of real gas behavior and to understand deviations from ideality in high-pressure environments.
