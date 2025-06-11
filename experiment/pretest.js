@@ -90,7 +90,7 @@
 
   const myQuestions = [
     {
-      question: "1. Which of the following is the Ideal Gas Equation?",  ///// Write the question inside double quotes
+      question: "Which of the following is the Ideal Gas Equation?",  ///// Write the question inside double quotes
       answers: {
         a: "PV=nRT",                  ///// Write the option 1 inside double quotes
         b: "P + a/V^2 = RT",                  ///// Write the option 2 inside double quotes
@@ -101,7 +101,7 @@
     },
 
     {
-     question: "2.What does the constant 'a' in the Van der Waals equation account for?",  ///// Write the question inside double quotes
+     question: "What does the constant 'a' in the Van der Waals equation account for?",  ///// Write the question inside double quotes
       answers: {
         a: "Volume occupied by gas molecules",                  ///// Write the option 1 inside double quotes
         b: " Atmospheric pressure",                  ///// Write the option 2 inside double quotes
@@ -111,7 +111,7 @@
       correctAnswer: "c"                ///// Write the correct option inside double quotes
     },     
     {
-      question: "3. Which gas law assumption is corrected by introducing the constant 'b' in the Van der Waals equation? ",  ///// Write the question inside double quotes
+      question: " Which gas law assumption is corrected by introducing the constant 'b' in the Van der Waals equation? ",  ///// Write the question inside double quotes
        answers: {
          a: " Gases exert no pressure",                  ///// Write the option 1 inside double quotes
          b: "Molecules have no volume",                  ///// Write the option 2 inside double quotes
@@ -121,7 +121,7 @@
        correctAnswer: "b"                ///// Write the correct option inside double quotes
      }, 
      {
-      question: "4. In which conditions does the Ideal Gas Law fail to accurately predict the behavior of real gases?",  ///// Write the question inside double quotes
+      question: "In which conditions does the Ideal Gas Law fail to accurately predict the behavior of real gases?",  ///// Write the question inside double quotes
        answers: {
          a: "High temperature and low pressure",                  ///// Write the option 1 inside double quotes
          b: " Low temperature and high pressure",                  ///// Write the option 2 inside double quotes
@@ -132,7 +132,7 @@
      },                              ///// To add more questions, copy the section below 
     									                  ///// this line
       {
-      question: "5. What is the primary purpose of comparing molar volumes using Van der Waals and Ideal Gas equations? ",  ///// Write the question inside double quotes
+      question: " What is the primary purpose of comparing molar volumes using Van der Waals and Ideal Gas equations? ",  ///// Write the question inside double quotes
        answers: {
          a: " To measure temperature changes",                  ///// Write the option 1 inside double quotes
          b: "To analyze real gas behavior vs ideal gas assumptions",                  ///// Write the option 2 inside double quotes
